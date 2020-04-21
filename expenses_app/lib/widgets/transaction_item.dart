@@ -2,11 +2,21 @@ import 'package:expenses_app/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionItem extends StatelessWidget {
+class TransactionItem extends StatefulWidget {
   final Transaction transaction;
   final Function fn;
 
-  TransactionItem(this.transaction, this.fn);
+  const TransactionItem({
+    Key key,
+    this.transaction,
+    this.fn,
+  }) : super(key: key);
+
+  @override
+  _TransactionItemState createState() => _TransactionItemState();
+}
+
+class _TransactionItemState extends State<TransactionItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,21 +32,21 @@ class TransactionItem extends StatelessWidget {
             padding: const EdgeInsets.all(6),
             child: FittedBox(
               child: Text(
-                '\$${transaction.amount.toStringAsFixed(2)}',
+                '\$${widget.transaction.amount.toStringAsFixed(2)}',
               ),
             ),
           ),
         ),
         title: Text(
-          transaction.title,
+          widget.transaction.title,
           style: Theme.of(context).textTheme.title,
         ),
         subtitle: Text(
-          DateFormat.yMMMd().format(transaction.date),
+          DateFormat.yMMMd().format(widget.transaction.date),
         ),
         trailing: MediaQuery.of(context).size.width > 460
             ? FlatButton.icon(
-                onPressed: () => fn(transaction.id),
+                onPressed: () => widget.fn(widget.transaction.id),
                 icon: Icon(
                   Icons.delete,
                   color: Theme.of(context).errorColor,
@@ -49,7 +59,7 @@ class TransactionItem extends StatelessWidget {
                   Icons.delete,
                   color: Theme.of(context).errorColor,
                 ),
-                onPressed: () => fn(transaction.id),
+                onPressed: () => widget.fn(widget.transaction.id),
               ),
       ),
     );

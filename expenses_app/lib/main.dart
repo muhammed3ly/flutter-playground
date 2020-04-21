@@ -63,9 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _deleteTransaction(String txid) {
+  void _deleteTransaction(String txId) {
     setState(() {
-      _transactions.removeWhere((tx) => tx.id == txid);
+      _transactions.removeWhere((tx) => tx.id == txId);
     });
   }
 
