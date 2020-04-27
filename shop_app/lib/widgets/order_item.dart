@@ -19,6 +19,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(10),
+      elevation: 8,
       child: Column(
         children: <Widget>[
           ListTile(
@@ -34,32 +35,34 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               },
             ),
           ),
-          if (expanded)
-            Container(
-              height: min(widget.order.products.length * 20.0 + 30, 100),
-              child: ListView.builder(
-                itemCount: widget.order.products.length,
-                itemBuilder: (ctx, idx) => Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        widget.order.products[idx].title,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '${widget.order.products[idx].quantity}x \$' +
-                            widget.order.products[idx].price.toStringAsFixed(2),
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    ],
-                  ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            height: expanded
+                ? min(widget.order.products.length * 20.0 + 30, 100)
+                : 0,
+            child: ListView.builder(
+              itemCount: widget.order.products.length,
+              itemBuilder: (ctx, idx) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      widget.order.products[idx].title,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '${widget.order.products[idx].quantity}x \$' +
+                          widget.order.products[idx].price.toStringAsFixed(2),
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
         ],
       ),
     );
