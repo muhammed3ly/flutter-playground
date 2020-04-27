@@ -20,12 +20,18 @@ class ProductDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: Card(
+                elevation: 5,
+                child: Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             SizedBox(

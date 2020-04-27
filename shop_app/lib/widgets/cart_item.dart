@@ -104,41 +104,43 @@ class CartItemWidget extends StatelessWidget {
           ),
           trailing: Container(
             width: 120,
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(
-                    Icons.remove,
-                    color: Colors.red,
-                    size: 18,
+            child: FittedBox(
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(
+                      Icons.remove,
+                      color: Colors.red,
+                      size: 18,
+                    ),
+                    onPressed: () {
+                      cart.decreaseItemQuantity(
+                        productID,
+                      );
+                    },
                   ),
-                  onPressed: () {
-                    cart.decreaseItemQuantity(
-                      productID,
-                    );
-                  },
-                ),
-                Text(
-                  '$quantity x',
-                  style: const TextStyle(
-                    fontSize: 18,
+                  Text(
+                    '$quantity x',
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.add,
-                    color: Colors.green,
-                    size: 18,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.green,
+                      size: 18,
+                    ),
+                    onPressed: () {
+                      cart.addItem(
+                        productID,
+                        price,
+                        title,
+                      );
+                    },
                   ),
-                  onPressed: () {
-                    cart.addItem(
-                      productID,
-                      price,
-                      title,
-                    );
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -76,7 +76,25 @@ class UserProductItem extends StatelessWidget {
                     onPressed: () async {
                       final ret = await _asyncConfirmDialog(context);
                       if (ret == ConfirmAction.ACCEPT)
-                        product.deleteProduct(productID);
+                        product.deleteProduct(productID).catchError((error) {
+                          return showDialog<Null>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: Text('An error Occured!'),
+                              content: Text('Something went wrong.'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Okay'),
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                )
+                              ],
+                            ),
+                          );
+                        }).then((_) {
+                          //Navigator.of(ctx).pop();
+                        });
                     }),
                 child: Icon(
                   Icons.delete,

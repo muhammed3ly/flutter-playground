@@ -39,26 +39,7 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  Consumer<CartProvider>(
-                    builder: (ctx, cart, child) => FlatButton(
-                      child: child,
-                      highlightColor: Theme.of(context).primaryColor,
-                      onPressed: (cart.itemsCount > 0)
-                          ? () {
-                              Provider.of<OrdersProvider>(context,
-                                      listen: false)
-                                  .addOrder(cart.items.values.toList(),
-                                      cart.totalPrice);
-                              cart.clear();
-                              final snackBar = SnackBar(
-                                  content:
-                                      Text('Your order has been recorded.'));
-                              Scaffold.of(ctx).showSnackBar(snackBar);
-                            }
-                          : null,
-                    ),
-                    child: const Text('ORDER NOW'),
-                  )
+                  OrderButton()
                 ],
               ),
             ),
@@ -80,6 +61,53 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CartProvider>(
+      builder: (ctx, cart, child) => FlatButton(
+        child: child,
+        highlightColor: Theme.of(context).primaryColor,
+        onPressed: (cart.itemsCount > 0 && !_isLoading)
+            ? () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                await Provider.of<OrdersProvider>(context, listen: false)
+                    .addOrder(cart.items.values.toList(), cart.totalPrice)
+                    .then((_) {
+                  cart.clear();
+                  final snackBar =
+                      SnackBar(content: Text('Your order has been recorded.'));
+                  Scaffold.of(ctx).showSnackBar(snackBar);
+                }).catchError((_) {
+                  final snackBar = SnackBar(
+                      content: Text('Your order could not be recorded!'));
+                  Scaffold.of(ctx).showSnackBar(snackBar);
+                });
+
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            : null,
+      ),
+      child: _isLoading ? CircularProgressIndicator() : const Text('ORDER NOW'),
     );
   }
 }
